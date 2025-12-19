@@ -1,0 +1,23 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+.container { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); max-width: 600px; width: 100%; padding: 40px; text-align: center; }
+header h1 { color: #2d3748; margin-bottom: 10px; }
+header p { color: #718096; margin-bottom: 30px; }
+.checker-box, .result-box { background: #f8f9fa; border-radius: 16px; padding: 30px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+.input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+#emailInput { flex: 1; padding: 16px 20px; border: 2px solid #cbd5e0; border-radius: 12px; font-size: 16px; transition: border 0.3s; }
+#emailInput:focus { outline: none; border-color: #4299e1; }
+#validateBtn { background: #4299e1; color: white; border: none; padding: 16px 30px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+#validateBtn:hover { background: #3182ce; }
+.hint { color: #a0aec0; font-size: 0.9rem; margin-top: 10px; }
+.result-box { text-align: right; }
+.result-content p { margin-bottom: 12px; color: #4a5568; }
+.status { font-weight: bold; padding: 4px 12px; border-radius: 20px; }
+.status.valid { background: #c6f6d5; color: #22543d; }
+.status.invalid { background: #fed7d7; color: #742a2a; }
+.status.risky { background: #feebc8; color: #744210; }
+.checks { margin-top: 20px; text-align: right; }
+.check-item { background: white; padding: 10px 15px; margin-bottom: 8px; border-radius: 10px; border-right: 4px solid #4299e1; }
+.reset-btn { background: #a0aec0; color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; margin-top: 20px; }
+.reset-btn:hover { background: #718096; }
+.loading { color: #4299e1; font-size: 18px; padding: 20px; }
