@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MailVerify - فحص البريد الإلكتروني</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 MailVerify</h1>
+            <p>أدخل أي بريد إلكتروني للتحقق من صحته مجاناً ودون تسجيل.</p>
+        </header>
+
+        <main>
+            <div class="checker-box">
+                <div class="input-group">
+                    <input type="email" id="emailInput" placeholder="مثال: name@example.com">
+                    <button onclick="validateEmail()" id="validateBtn">فحص البريد</button>
+                </div>
+                <p class="hint">سيتم فحص تركيب البريد، النطاق، الخوادم، والبريد المؤقت.</p>
+            </div>
+
+            <div class="result-box" id="resultBox" style="display: none;">
+                <h3>نتيجة التحقق:</h3>
+                <div class="result-content">
+                    <p><strong>البريد المدخل:</strong> <span id="resultEmail"></span></p>
+                    <p><strong>الحالة:</strong> <span id="resultStatus" class="status"></span></p>
+                    <p><strong>التفاصيل:</strong> <span id="resultDetails"></span></p>
+                    <div class="checks" id="resultChecks"></div>
+                </div>
+                <button onclick="resetForm()" class="reset-btn">فحص بريد آخر</button>
+            </div>
+
+            <div class="loading" id="loading" style="display: none;">
+                جاري التحقق من البريد...
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
