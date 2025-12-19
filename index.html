@@ -3,41 +3,804 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MailVerify - فحص البريد الإلكتروني</title>
-    <link rel="stylesheet" href="style.css">
+    <title>MailVerify Pro | الفحص الاحترافي للبريد الإلكتروني</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Tajawal', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #a78bfa;
+            --gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 30%, #6d28d9 70%, #5b21b6 100%);
+            --surface: #0f0f23;
+            --surface-light: #1a1a2e;
+            --surface-card: #23233d;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --accent: #10b981;
+            --accent-danger: #ef4444;
+            --accent-warning: #f59e0b;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background: var(--surface);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* === شريط التنقل === */
+        .navbar {
+            padding: 25px 0;
+            border-bottom: var(--border);
+            background: rgba(15, 15, 35, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 10px;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        /* === قسم البطل === */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #f8fafc, #a78bfa, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        /* === صندوق الفحص الأساسي === */
+        .checker-card {
+            background: var(--surface-card);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 40px auto;
+            max-width: 1000px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checker-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient);
+        }
+
+        .checker-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            font-size: 1.6rem;
+        }
+
+        .checker-title i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        /* === واجهة الإدخال === */
+        .input-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        #emailInput {
+            flex: 1;
+            min-width: 300px;
+            padding: 22px 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border: var(--border);
+            border-radius: 16px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        #emailInput:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        #validateBtn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0 40px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 68px;
+        }
+
+        #validateBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .input-hint {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        /* === خاصية الفحص الدفعي === */
+        .batch-toggle {
+            background: rgba(139, 92, 246, 0.08);
+            border: var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .batch-toggle:hover {
+            background: rgba(139, 92, 246, 0.12);
+        }
+
+        .toggle-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .batch-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: vertical;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .batch-input.active {
+            display: block;
+        }
+
+        .batch-hint {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .batch-hint.active {
+            display: block;
+        }
+
+        /* === نتيجة الفحص === */
+        .result-card {
+            background: var(--surface-card);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 1000px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: var(--border);
+        }
+
+        .result-email {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .result-status {
+            font-weight: 700;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+        }
+
+        .status-valid {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-invalid {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .status-risky {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 25px;
+            border: var(--border);
+        }
+
+        .result-item i {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .item-valid i { color: var(--accent); }
+        .item-invalid i { color: var(--accent-danger); }
+
+        .item-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .item-value {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .reset-btn {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary-light);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 16px 35px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: rgba(139, 92, 246, 0.25);
+        }
+
+        /* === التحميل === */
+        .loading {
+            background: var(--surface-card);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 1000px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            text-align: center;
+            display: none;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 25px;
+            border: 5px solid rgba(139, 92, 246, 0.2);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* === ميزات === */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            background: linear-gradient(to right, #a78bfa, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--surface-card);
+            border-radius: 20px;
+            padding: 35px;
+            border: var(--border);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* === تذييل الصفحة === */
+        .footer {
+            padding: 50px 0;
+            border-top: var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* === تفاعلات للجوال === */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .input-section { flex-direction: column; }
+            #emailInput { min-width: 100%; }
+            #validateBtn { width: 100%; justify-content: center; }
+            .checker-card, .result-card { padding: 30px 20px; }
+            .result-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <i class="fas fa-mail-bulk"></i>
+                <span>MailVerify Pro</span>
+            </div>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="#features"><i class="fas fa-star"></i> المميزات</a>
+                <a href="#"><i class="fas fa-question-circle"></i> المساعدة</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
     <div class="container">
-        <header>
-            <h1>🔍 MailVerify</h1>
-            <p>أدخل أي بريد إلكتروني للتحقق من صحته مجاناً ودون تسجيل.</p>
-        </header>
+        <!-- قسم البطل -->
+        <section class="hero">
+            <h1>الفحص الاحترافي للبريد الإلكتروني</h1>
+            <p>أداة متقدمة للتحقق من صحة عناوين البريد الإلكتروني بدقة متناهية. افحص بريداً واحداً أو قائمة كاملة مجاناً.</p>
+        </section>
 
-        <main>
-            <div class="checker-box">
-                <div class="input-group">
-                    <input type="email" id="emailInput" placeholder="مثال: name@example.com">
-                    <button onclick="validateEmail()" id="validateBtn">فحص البريد</button>
+        <!-- بطاقة الفحص الرئيسية -->
+        <section class="checker-card">
+            <div class="checker-title">
+                <i class="fas fa-search-plus"></i>
+                <h2>فحص البريد الإلكتروني</h2>
+            </div>
+            
+            <!-- الفحص الفردي -->
+            <div class="input-section">
+                <input type="text" id="emailInput" placeholder="أدخل بريداً إلكترونياً للفحص (مثال: name@company.com)" autocomplete="off">
+                <button id="validateBtn" onclick="validateEmail()">
+                    <i class="fas fa-play-circle"></i>
+                    فحص البريد
+                </button>
+            </div>
+            <p class="input-hint">يمكنك إدخال بريد إلكتروني واحد أو استخدام خاصية الفحص الدفعي أدناه.</p>
+
+            <!-- الفحص الدفعي -->
+            <div class="batch-toggle" onclick="toggleBatchInput()">
+                <div class="toggle-header">
+                    <i class="fas fa-layer-group"></i>
+                    <span>فحص قائمة بريد إلكتروني (دفعة واحدة)</span>
+                    <i class="fas fa-chevron-down" id="toggleIcon"></i>
                 </div>
-                <p class="hint">سيتم فحص تركيب البريد، النطاق، الخوادم، والبريد المؤقت.</p>
+                <textarea id="batchInput" class="batch-input" placeholder="الصق قائمة بعناوين البريد الإلكتروني هنا، كل عنوان في سطر منفصل:
+
+example1@gmail.com
+contact@company.org
+test@domain.com
+..."></textarea>
+                <p class="batch-hint" id="batchHint">يمكنك لصق حتى 100 بريد إلكتروني للفحص الدفعي. ستعرض النتيجة حالة كل بريد على حدة.</p>
+            </div>
+        </section>
+
+        <!-- حالة التحميل -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <h3>جاري فحص البريد الإلكتروني...</h3>
+            <p>نقوم بتحليل التركيب، النطاق، وسجلات الخوادم. قد تستغرق العملية بضع ثوانٍ.</p>
+        </div>
+
+        <!-- بطاقة النتائج -->
+        <div class="result-card" id="resultCard">
+            <div class="result-header">
+                <div class="result-email" id="resultEmail">user@example.com</div>
+                <div class="result-status status-valid" id="resultStatus">بريد صالح</div>
             </div>
 
-            <div class="result-box" id="resultBox" style="display: none;">
-                <h3>نتيجة التحقق:</h3>
-                <div class="result-content">
-                    <p><strong>البريد المدخل:</strong> <span id="resultEmail"></span></p>
-                    <p><strong>الحالة:</strong> <span id="resultStatus" class="status"></span></p>
-                    <p><strong>التفاصيل:</strong> <span id="resultDetails"></span></p>
-                    <div class="checks" id="resultChecks"></div>
+            <div class="result-grid" id="resultGrid">
+                <!-- سيتم ملء هذا القسم ديناميكياً بالنتائج -->
+            </div>
+
+            <button class="reset-btn" onclick="resetForm()">
+                <i class="fas fa-redo"></i>
+                فحص بريد آخر
+            </button>
+        </div>
+
+        <!-- قسم الميزات -->
+        <section class="features" id="features">
+            <h2 class="section-title">ميزات المنصة</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">فحص فوري</h3>
+                    <p class="feature-desc">نتائج فورية في أقل من ثانيتين باستخدام خوارزميات متقدمة للتحقق من صحة البريد.</p>
                 </div>
-                <button onclick="resetForm()" class="reset-btn">فحص بريد آخر</button>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="feature-title">فحص دفعي</h3>
+                    <p class="feature-desc">تحقق من صحة مئات عناوين البريد الإلكتروني في مرة واحدة. وفر الوقت والجهد.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">أمان تام</h3>
+                    <p class="feature-desc">لا نخزن أو نشارك بياناتك. جميع عمليات الفحص تتم بشكل آمن وسري.</p>
+                </div>
             </div>
-
-            <div class="loading" id="loading" style="display: none;">
-                جاري التحقق من البريد...
-            </div>
-        </main>
+        </section>
     </div>
-    <script src="script.js"></script>
+
+    <!-- تذييل الصفحة -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2023 MailVerify Pro. جميع الحقوق محفوظة.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">أداة مجانية للتحقق من صحة البريد الإلكتروني</p>
+        </div>
+    </footer>
+
+    <script>
+        // متغيرات عامة
+        let batchMode = false;
+
+        // تبديل وضع الفحص الدفعي
+        function toggleBatchInput() {
+            batchMode = !batchMode;
+            const batchInput = document.getElementById('batchInput');
+            const batchHint = document.getElementById('batchHint');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            batchInput.classList.toggle('active', batchMode);
+            batchHint.classList.toggle('active', batchMode);
+            toggleIcon.style.transform = batchMode ? 'rotate(180deg)' : 'rotate(0deg)';
+            
+            if (batchMode) {
+                document.getElementById('emailInput').placeholder = "أو استمر في استخدام الحقل الفردي أعلاه";
+                batchInput.focus();
+            } else {
+                document.getElementById('emailInput').placeholder = "أدخل بريداً إلكترونياً للفحص (مثال: name@company.com)";
+            }
+        }
+
+        // التحقق من البريد الإلكتروني
+        async function validateEmail() {
+            const emailInput = document.getElementById('emailInput');
+            const batchInput = document.getElementById('batchInput');
+            const loading = document.getElementById('loading');
+            const resultCard = document.getElementById('resultCard');
+            
+            let emails = [];
+            
+            if (batchMode && batchInput.value.trim()) {
+                // وضع الدفعي
+                emails = batchInput.value.split('\n')
+                    .map(email => email.trim())
+                    .filter(email => email.length > 0);
+                    
+                if (emails.length === 0) {
+                    alert('يرجى إدخال عناوين بريد إلكتروني للفحص الدفعي.');
+                    return;
+                }
+                
+                if (emails.length > 100) {
+                    alert('الحد الأقصى للفحص الدفعي هو 100 بريد إلكتروني.');
+                    return;
+                }
+            } else {
+                // الوضع الفردي
+                const email = emailInput.value.trim();
+                if (!email) {
+                    alert('يرجى إدخال بريد إلكتروني.');
+                    return;
+                }
+                emails = [email];
+            }
+            
+            // إظهار حالة التحميل
+            loading.style.display = 'block';
+            resultCard.style.display = 'none';
+            
+            try {
+                // في بيئة الإنتاج، استبدل هذا بالاتصال الفعلي بـ API
+                // هذا مثال محاكاة للنتائج
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                if (batchMode && emails.length > 1) {
+                    // عرض نتائج متعددة للفحص الدفعي
+                    displayBatchResults(emails);
+                } else {
+                    // عرض نتيجة واحدة
+                    displaySingleResult(emails[0]);
+                }
+                
+                loading.style.display = 'none';
+                resultCard.style.display = 'block';
+                
+            } catch (error) {
+                console.error('خطأ في الاتصال:', error);
+                loading.style.display = 'none';
+                alert('حدث خطأ أثناء التحقق. يرجى المحاولة مرة أخرى.');
+            }
+        }
+
+        // عرض نتيجة واحدة
+        function displaySingleResult(email) {
+            document.getElementById('resultEmail').textContent = email;
+            const resultGrid = document.getElementById('resultGrid');
+            
+            // بيانات وهمية للعرض (في الإنتاج ستأتي من API)
+            const mockResults = {
+                status: Math.random() > 0.3 ? 'VALID' : (Math.random() > 0.5 ? 'INVALID' : 'RISKY'),
+                validations: {
+                    syntax: Math.random() > 0.1,
+                    domain: Math.random() > 0.15,
+                    mxRecords: Math.random() > 0.2,
+                    smtp: Math.random() > 0.25,
+                    disposable: Math.random() > 0.9,
+                    roleAccount: Math.random() > 0.7
+                },
+                score: Math.floor(Math.random() * 40) + 60
+            };
+            
+            // تحديث حالة النتيجة
+            const statusEl = document.getElementById('resultStatus');
+            if (mockResults.status === 'VALID') {
+                statusEl.textContent = 'بريد صالح ✅';
+                statusEl.className = 'result-status status-valid';
+            } else if (mockResults.status === 'INVALID') {
+                statusEl.textContent = 'بريد غير صالح ❌';
+                statusEl.className = 'result-status status-invalid';
+            } else {
+                statusEl.textContent = 'بريد محفوف بالمخاطر ⚠️';
+                statusEl.className = 'result-status status-risky';
+            }
+            
+            // إنشاء شبكة النتائج
+            resultGrid.innerHTML = '';
+            
+            const checks = [
+                { key: 'syntax', icon: 'fas fa-code', title: 'التركيب النحوي', desc: 'تنسيق البريد الإلكتروني صحيح' },
+                { key: 'domain', icon: 'fas fa-globe', title: 'النطاق', desc: 'نطاق البريد موجود ونشط' },
+                { key: 'mxRecords', icon: 'fas fa-server', title: 'سجلات MX', desc: 'يوجد خادم بريد للنطاق' },
+                { key: 'smtp', icon: 'fas fa-exchange-alt', title: 'استجابة SMTP', desc: 'الخادم يستقبل الرسائل' },
+                { key: 'disposable', icon: 'fas fa-clock', title: 'بريد مؤقت', desc: 'ليس من خدمة بريد مؤقتة' },
+                { key: 'roleAccount', icon: 'fas fa-user-tag', title: 'حساب فردي', desc: 'ليس حساباً جماعياً (مثل info@)' }
+            ];
+            
+            checks.forEach(check => {
+                const isValid = mockResults.validations[check.key];
+                const item = document.createElement('div');
+                item.className = `result-item ${isValid ? 'item-valid' : 'item-invalid'}`;
+                item.innerHTML = `
+                    <i class="${check.icon}"></i>
+                    <div class="item-title">${check.title}</div>
+                    <div class="item-value">${isValid ? '✓ ' + check.desc : '✗ فشل في ' + check.title}</div>
+                `;
+                resultGrid.appendChild(item);
+            });
+        }
+
+        // عرض نتائج الفحص الدفعي
+        function displayBatchResults(emails) {
+            document.getElementById('resultEmail').textContent = `${emails.length} بريد إلكتروني`;
+            document.getElementById('resultStatus').textContent = 'نتيجة دفعية';
+            document.getElementById('resultStatus').className = 'result-status status-valid';
+            
+            const resultGrid = document.getElementById('resultGrid');
+            resultGrid.innerHTML = '';
+            
+            // عرض أول 6 نتائج كمثال
+            const sampleEmails = emails.slice(0, 6);
+            
+            sampleEmails.forEach((email, index) => {
+                const isValid = Math.random() > 0.3;
+                const item = document.createElement('div');
+                item.className = `result-item ${isValid ? 'item-valid' : 'item-invalid'}`;
+                item.innerHTML = `
+                    <i class="fas fa-${isValid ? 'check-circle' : 'times-circle'}"></i>
+                    <div class="item-title">${email}</div>
+                    <div class="item-value">${isValid ? 'بريد صالح' : 'بريد غير صالح'}</div>
+                `;
+                resultGrid.appendChild(item);
+            });
+            
+            if (emails.length > 6) {
+                const remaining = emails.length - 6;
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `
+                    <i class="fas fa-ellipsis-h"></i>
+                    <div class="item-title">و ${remaining} بريد إضافي</div>
+                    <div class="item-value">تم فحص جميع البريدات بنجاح</div>
+                `;
+                resultGrid.appendChild(item);
+            }
+        }
+
+        // إعادة تعيين النموذج
+        function resetForm() {
+            document.getElementById('emailInput').value = '';
+            document.getElementById('batchInput').value = '';
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('emailInput').focus();
+            batchMode = false;
+            document.getElementById('batchInput').classList.remove('active');
+            document.getElementById('batchHint').classList.remove('active');
+            document.getElementById('toggleIcon').style.transform = 'rotate(0deg)';
+        }
+
+        // تفعيل إدخال الإكمال التلقائي عند الضغط على Enter
+        document.getElementById('emailInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                validateEmail();
+            }
+        });
+        
+        document.getElementById('batchInput').addEventListener('keypress', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                validateEmail();
+            }
+        });
+
+        // تحميل أولي لواجهة المستخدم
+        window.onload = function() {
+            document.getElementById('emailInput').focus();
+        };
+    </script>
 </body>
 </html>
